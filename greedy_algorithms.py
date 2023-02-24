@@ -31,10 +31,6 @@
 #     result = get_dots(dots)
 #     print(len(result))
 #     print(*result)
-#
-#
-# if __name__ == '__main__':
-#     main()
 
 
 
@@ -45,32 +41,60 @@
 ###########################
 
 
-def get_max_cost(l: list, volume: float) -> float:
-    costs = [(thing[0], thing[1], thing[0] / thing[1]) for thing in l]
-    costs.sort(key=lambda x: x[2], reverse=True)
-    max_cost = 0
-    volume = volume
+# def get_max_cost(l: list, volume: float) -> float:
+#     costs = [(thing[0], thing[1], thing[0] / thing[1]) for thing in l]
+#     costs.sort(key=lambda x: x[2], reverse=True)
+#     max_cost = 0
+#     volume = volume
+#
+#     for thing in costs:
+#         if not volume:
+#             break
+#
+#         if thing[1] <= volume:
+#             max_cost += thing[0]
+#             volume -= thing[1]
+#
+#         else:
+#             max_cost += volume * thing[2]
+#             volume = 0
+#
+#     return max_cost
+#
+#
+# def main():
+#     count_things, backpack_volume = map(float, input('-> ').split())
+#     things = [tuple(map(float, input('-> ').split())) for _ in range(int(count_things))]
+#     costs = f'{get_max_cost(things, backpack_volume):.3f}'
+#     print(costs)
 
-    for thing in costs:
-        if not volume:
-            break
 
-        if thing[1] <= volume:
-            max_cost += thing[0]
-            volume -= thing[1]
 
-        else:
-            max_cost += volume * thing[2]
-            volume = 0
 
-    return max_cost
+
+#####################
+#   Various terms   #
+#####################
+
+
+def get_terms(n: int) -> list:
+    terms = []
+    i = 1
+
+    while n:
+        if (n - i) > i or not (n - i):
+            n -= i
+            terms.append(i)
+        i += 1
+
+    return terms
 
 
 def main():
-    count_things, backpack_volume = map(float, input('-> ').split())
-    things = [tuple(map(float, input('-> ').split())) for _ in range(int(count_things))]
-    costs = f'{get_max_cost(things, backpack_volume):.3f}'
-    print(costs)
+    n = int(input('-> '))
+    result = get_terms(n)
+    print(len(result))
+    print(*result)
 
 
 if __name__ == '__main__':
