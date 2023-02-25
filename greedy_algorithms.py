@@ -105,39 +105,76 @@
 ######################
 
 
-def get_huff_code(s: str) -> dict:
-    symbols = [(sym, s.count(sym)) for sym in set(s)]
-    symbols.sort(key=lambda x: x[1])
-    huff_code = {}
+# def get_huff_code(s: str) -> dict:
+#     symbols = [(sym, s.count(sym)) for sym in set(s)]
+#     symbols.sort(key=lambda x: x[1])
+#     huff_code = {}
+#
+#     if len(symbols) == 1:
+#         return {symbols[0][0]: '0'}
+#
+#     while len(symbols) > 1:
+#         for i in range(len(symbols[0][0])):
+#             huff_code[symbols[0][0][i]] = '0' + huff_code.get(symbols[0][0][i], '')
+#
+#         for i in range(len(symbols[1][0])):
+#             huff_code[symbols[1][0][i]] = '1' + huff_code.get(symbols[1][0][i], '')
+#
+#         new = (symbols[0][0] + symbols[1][0], symbols[0][1] + symbols[1][1])
+#         symbols.pop(0)
+#         symbols[0] = new
+#         symbols.sort(key=lambda x: x[1])
+#
+#     return dict(sorted(huff_code.items(), key=lambda x: len(x[1])))
+#
+#
+# def main():
+#     text = input('-> ')
+#     result = get_huff_code(text)
+#     huff_code = ''.join(result[x] for x in text)
+#     print(len(result), len(huff_code))
+#
+#     for key, value in result.items():
+#         print(f'{key}: {value}')
+#
+#     print(huff_code)
 
-    if len(symbols) == 1:
-        return {symbols[0][0]: '0'}
 
-    while len(symbols) > 1:
-        for i in range(len(symbols[0][0])):
-            huff_code[symbols[0][0][i]] = '0' + huff_code.get(symbols[0][0][i], '')
 
-        for i in range(len(symbols[1][0])):
-            huff_code[symbols[1][0][i]] = '1' + huff_code.get(symbols[1][0][i], '')
 
-        new = (symbols[0][0] + symbols[1][0], symbols[0][1] + symbols[1][1])
-        symbols.pop(0)
-        symbols[0] = new
-        symbols.sort(key=lambda x: x[1])
 
-    return dict(sorted(huff_code.items(), key=lambda x: len(x[1])))
+########################
+#   Huffman decoding   #
+########################
+
+
+def get_huff_decode(d: dict, s: str) -> str:
+    i = 1
+    decode = ''
+
+    while s:
+        if s[:i] in d:
+            decode += d[s[:i]]
+            s = s[i:]
+            i = 1
+            continue
+
+        i += 1
+
+    return decode
 
 
 def main():
-    text = input('-> ')
-    result = get_huff_code(text)
-    huff_code = ''.join(result[x] for x in text)
-    print(len(result), len(huff_code))
+    n, m = map(int, input('-> ').split())
+    decode = {}
 
-    for key, value in result.items():
-        print(f'{key}: {value}')
+    for i in range(n):
+        word = input('-> ').split(': ')
+        decode[word[1]] = word[0]
 
-    print(huff_code)
+    code = input('-> ')
+    result = get_huff_decode(decode, code)
+    print(result)
 
 
 if __name__ == '__main__':
