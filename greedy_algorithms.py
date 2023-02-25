@@ -148,33 +148,128 @@
 ########################
 
 
-def get_huff_decode(d: dict, s: str) -> str:
-    i = 1
-    decode = ''
+# def get_huff_decode(d: dict, s: str) -> str:
+#     i = 1
+#     decode = ''
+#
+#     while s:
+#         if s[:i] in d:
+#             decode += d[s[:i]]
+#             s = s[i:]
+#             i = 1
+#             continue
+#
+#         i += 1
+#
+#     return decode
+#
+#
+# def main():
+#     n, m = map(int, input('-> ').split())
+#     decode = {}
+#
+#     for i in range(n):
+#         word = input('-> ').split(': ')
+#         decode[word[1]] = word[0]
+#
+#     code = input('-> ')
+#     result = get_huff_decode(decode, code)
+#     print(result)
 
-    while s:
-        if s[:i] in d:
-            decode += d[s[:i]]
-            s = s[i:]
-            i = 1
-            continue
 
-        i += 1
 
-    return decode
+
+
+######################
+#   Priority Queue   #
+######################
+
+
+import sys
+
+
+def sift_up(l: list) -> list:
+    if len(l) > 1:
+        i = len(l) - 1
+
+        while i and l[i] > l[(i - 1) // 2]:
+            l[i], l[(i - 1) // 2] = l[(i - 1) // 2], l[i]
+            i = (i - 1) // 2
+
+    return l
+
+
+def sift_down(l: list) -> list:
+    if len(l) > 1:
+        i = 0
+
+        while 2 * i + 1 < len(l):
+            if 2 * i + 2 < len(l) and l[i] < max((l[2 * i + 1], l[2 * i + 2])):
+                index = 2 * i + 1 if l[2 * i + 1] > l[2 * i + 2] else 2 * i + 2
+            elif l[i] < l[2 * i + 1]:
+                index = 2 * i + 1
+            else:
+                break
+
+            l[i], l[index] = l[index], l[i]
+            i = index
+
+    return l
 
 
 def main():
-    n, m = map(int, input('-> ').split())
-    decode = {}
+    n = int(sys.stdin.readline())
+    q = []
 
     for i in range(n):
-        word = input('-> ').split(': ')
-        decode[word[1]] = word[0]
+        command = sys.stdin.readline().split()
 
-    code = input('-> ')
-    result = get_huff_decode(decode, code)
-    print(result)
+        if command[0] == 'Insert':
+            q.append(int(command[1]))
+            q = sift_up(q)
+
+        elif q:
+            print(q[0])
+            q[0] = q[-1]
+            q.pop()
+            q = sift_down(q)
+
+
+
+
+
+######################
+#   Priority Queue   #
+######################
+
+
+# import heapq
+#
+#
+# def priority_queue(l: list):
+#     q = []
+#     heapq.heapify(q)
+#
+#     for command in l:
+#         if command[0] == 'Insert':
+#             heapq.heappush(q, -command[1])
+#         elif q:
+#             print(-heapq.heappop(q))
+#
+#
+# def main():
+#     n = int(input('-> '))
+#     commands = []
+#
+#     for i in range(n):
+#         command = input('-> ').split()
+#
+#         if len(command) == 1:
+#             commands.append((command[0], ''))
+#         else:
+#             commands.append((command[0], int(command[1])))
+#
+#     priority_queue(commands)
 
 
 if __name__ == '__main__':
