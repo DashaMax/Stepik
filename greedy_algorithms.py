@@ -77,24 +77,67 @@
 #####################
 
 
-def get_terms(n: int) -> list:
-    terms = []
-    i = 1
+# def get_terms(n: int) -> list:
+#     terms = []
+#     i = 1
+#
+#     while n:
+#         if (n - i) > i or not (n - i):
+#             n -= i
+#             terms.append(i)
+#         i += 1
+#
+#     return terms
+#
+#
+# def main():
+#     n = int(input('-> '))
+#     result = get_terms(n)
+#     print(len(result))
+#     print(*result)
 
-    while n:
-        if (n - i) > i or not (n - i):
-            n -= i
-            terms.append(i)
-        i += 1
 
-    return terms
+
+
+
+######################
+#   Huffman coding   #
+######################
+
+
+def get_huff_code(s: str) -> dict:
+    symbols = [(sym, s.count(sym)) for sym in set(s)]
+    symbols.sort(key=lambda x: x[1])
+    huff_code = {}
+
+    if len(symbols) == 1:
+        return {symbols[0][0]: '0'}
+
+    while len(symbols) > 1:
+        for i in range(len(symbols[0][0])):
+            huff_code[symbols[0][0][i]] = '0' + huff_code.get(symbols[0][0][i], '')
+
+        for i in range(len(symbols[1][0])):
+            huff_code[symbols[1][0][i]] = '1' + huff_code.get(symbols[1][0][i], '')
+
+        new = (symbols[0][0] + symbols[1][0], symbols[0][1] + symbols[1][1])
+        symbols.pop(0)
+        symbols[0] = new
+        symbols.sort(key=lambda x: x[1])
+
+    return dict(sorted(huff_code.items(), key=lambda x: len(x[1])))
 
 
 def main():
-    n = int(input('-> '))
-    result = get_terms(n)
-    print(len(result))
-    print(*result)
+    text = input('-> ')
+    result = get_huff_code(text)
+    huff_code = ''.join(result[x] for x in text)
+    print(len(result), len(huff_code))
+
+    for key, value in result.items():
+        print(f'{key}: {value}')
+
+    print(huff_code)
 
 
 if __name__ == '__main__':
