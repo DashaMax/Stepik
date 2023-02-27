@@ -80,22 +80,74 @@
 ###########################
 
 
-def sort_by_counting(l: list) -> map:
-    counts = [0] * 10
-    s = ''
+# def sort_by_counting(l: list) -> map:
+#     counts = [0] * 10
+#     s = ''
+#
+#     for num in l:
+#         counts[num - 1] += 1
+#
+#     for i, num in enumerate(counts):
+#         s += (str(i + 1) + ' ') * num
+#
+#     return map(int, s.split())
+#
+#
+# def main():
+#     nums = list(map(int, input('-> ').split()))
+#     print(*sort_by_counting(nums))
 
-    for num in l:
-        counts[num - 1] += 1
 
-    for i, num in enumerate(counts):
-        s += (str(i + 1) + ' ') * num
 
-    return map(int, s.split())
+
+
+
+
+
+
+
+###########################
+#   Points and segments   #
+###########################
+
+
+from random import randint
+import bisect
+
+
+def count_point(l1: list, l2: list, dot: int) -> int:
+    return abs(bisect.bisect(l1, dot) - bisect.bisect_left(l2, dot))
+
+
+def quick_sort(l: list) -> list:
+    if len(l) == 1 or not l:
+        return l
+
+    value = l[randint(0, len(l) - 1)]
+    left = [x for x in l if x < value]
+    eq = [x for x in l if x == value]
+    right = [x for x in l if x > value]
+
+    return quick_sort(left) + eq + quick_sort(right)
 
 
 def main():
-    nums = list(map(int, input('-> ').split()))
-    print(*sort_by_counting(nums))
+    n, m = map(int, input('-> ').split())
+    coords_start = []
+    coords_end = []
+
+    for i in range(n):
+        coords = input('-> ').split()
+        coords_start.append(int(coords[0]))
+        coords_end.append(int(coords[1]))
+
+    dots = [int(x) for x in input('-> ').split()]
+
+    coords_start = quick_sort(coords_start)
+    coords_end = quick_sort(coords_end)
+
+    for dot in dots:
+        print(count_point(coords_start, coords_end, int(dot)), end=' ')
 
 
 if __name__ == '__main__':
