@@ -36,40 +36,66 @@
 ############################
 
 
-COUNT = 0
+# COUNT = 0
+#
+#
+# def get_inversions(l: list):
+#     if len(l) == 1:
+#         return l
+#
+#     left = get_inversions(l[:len(l) // 2])
+#     right = get_inversions(l[len(l) // 2:])
+#     list_sort = []
+#     global COUNT
+#     i = j = 0
+#
+#     while i < len(left) and j < len(right):
+#         if left[i] > right[j]:
+#             COUNT += len(left) - i
+#             list_sort.append(right[j])
+#             j += 1
+#         else:
+#             list_sort.append(left[i])
+#             i += 1
+#
+#     if i < len(left):
+#         list_sort.extend(left[i:])
+#     elif j < len(right):
+#         list_sort.extend(right[j:])
+#
+#     return list_sort
+#
+#
+# def main():
+#     numbers = list(map(int, input('-> ').split()))
+#     get_inversions(numbers)
+#     print(COUNT)
 
 
-def get_inversions(l: list):
-    if len(l) == 1:
-        return l
 
-    left = get_inversions(l[:len(l) // 2])
-    right = get_inversions(l[len(l) // 2:])
-    list_sort = []
-    global COUNT
-    i = j = 0
 
-    while i < len(left) and j < len(right):
-        if left[i] > right[j]:
-            COUNT += len(left) - i
-            list_sort.append(right[j])
-            j += 1
-        else:
-            list_sort.append(left[i])
-            i += 1
 
-    if i < len(left):
-        list_sort.extend(left[i:])
-    elif j < len(right):
-        list_sort.extend(right[j:])
+###########################
+#   Sorting by counting   #
+###########################
 
-    return list_sort
+
+def sort_by_counting(l: list) -> map:
+    counts = [0] * 10
+    s = ''
+
+    for num in l:
+        counts[num - 1] += 1
+
+    for i, num in enumerate(counts):
+        s += (str(i + 1) + ' ') * num
+
+    return map(int, s.split())
 
 
 def main():
-    numbers = list(map(int, input('-> ').split()))
-    get_inversions(numbers)
-    print(COUNT)
+    nums = list(map(int, input('-> ').split()))
+    print(*sort_by_counting(nums))
 
 
 if __name__ == '__main__':
