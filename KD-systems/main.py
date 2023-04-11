@@ -58,6 +58,8 @@ def hello_logic(file: str):
     return hello_listen()          # Прослушиваем агента
 
 
+# main_logic
+
 def main_listen():
     with nv.listen(5000) as r:
         if not r:
